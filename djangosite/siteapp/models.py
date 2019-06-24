@@ -61,3 +61,26 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('product_detail', kwargs={'product_slug': self.slug})
 
+
+# class Client(models.Model):
+#     name = models.CharField(max_length=50)
+#     email = models.EmailField()
+#     phone = models.CharField(max_length=13)
+#     message = models.CharField(max_length=500)
+#
+
+
+class CartItem(models.Model):
+    product = models.ForeignKey('Product', on_delete=models.DO_NOTHING)
+    qty = models.PositiveIntegerField(default=1)
+    item_total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
+
+    def __str__(self):
+        return f'Cart item for product {product.title}'
+
+class Cart(models.Model):
+    items = models.ManyToManyField(CartItem)
+    cart_total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
+
+    def __str__(self):
+        return str(self.id)
