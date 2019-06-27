@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
-from siteapp.models import Category, Product
+from siteapp.models import Category, Product, ProductImage
 import telegram
 from .forms import FeedbackForm
 
@@ -7,17 +7,22 @@ from .forms import FeedbackForm
 # Create your views here.
 
 def base_view(request):
-    categories = Category.objects.all()
-    products = Product.objects.all()
-    context = {
-        'categories': categories,
-        'products': products,
-    }
+    products_images = ProductImage.objects.filter(is_active=True, is_main=True, product__is_active=True)
+    return render(request, 'base.html', locals())
 
-    return render(request, 'base.html', context)
+
+    # categories = Category.objects.all()
+    # products = Product.objects.all()
+    # context = {
+    #     'categories': categories,
+    #     'products': products,
+    # }
+    #
+    # return render(request, 'base.html', context)
 
 
 def product_view(request, product_slug):
+
     product = Product.objects.get(slug=product_slug)
     context = {
         'product': product
@@ -58,7 +63,7 @@ def telegram_form(request):
 
             text = ''
             for key, value in context.items():
-                text += f'{key} {value}\n'
+                text += f'{key}\n{value}\n'
 
             bot.send_message(chat_id=chat_id, text=text)
             return redirect('http://127.0.0.1:8000')
@@ -67,8 +72,11 @@ def telegram_form(request):
             return HttpResponse(f'{errors}')
     return HttpResponse('Wrong request method')
 
-
-
+# def home(request):
+#     products_images = ProductImage.objects.filter(is_active=True, is_main=True, product__is_active=True)
+#     products_images_phones = products_images.filter(product__category__id=1)
+#     products_images_laptops = products_images.filter(product__category__id=2)
+#     return render(request, 'landing/home.html', locals())
 
     # elif request.method == 'POST':
     #     form = CarForm(request.POST)

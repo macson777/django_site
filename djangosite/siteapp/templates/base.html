@@ -14,6 +14,7 @@
 
     <link href='{% static "css/bootstrap.min.css" %}' rel="stylesheet">
     <link href='{% static "css/shop-homepage.css" %}' rel="stylesheet">
+    <link href='{% static "css/bootstrap-product.css" %}' rel="stylesheet">
 
 </head>
 
@@ -99,14 +100,14 @@
                 </div>
 
                 <div class="row">
-                    {%for product in products%}
+                    {%for product_image in products_images%}
                     <div class="col-sm-4 col-lg-4 col-md-4">
                         <div class="thumbnail">
-                            <img src="{{ product.image.url }}" alt="" style='width:100%; height:100%;'>
+                            <img src="{{ product_image.image.url }}" alt="" style='width:100%; height:100%;'>
                             <div class="caption">
-                                <h4><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h4>
-                                <p>{{ product.description }}</p>
-                                <h4><strong><class="pull-down">{{ product.price}} BYN</strong></h4>
+                                <h4><a href="{{ product_image.product.get_absolute_url }}">{{ product_image.product.name }}</a></h4>
+                                <p>{{ product_image.product.description }}</p>
+                                <h4 class="pull-down"><strong>{{ product_image.product.price}} BYN</strong></h4>
 
                             </div>
                         </div>
