@@ -1,17 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="col-sm-4">
-    {% for image_item in product.productimage.image_set.all %}
-        <img src="{{image_item.image.url}}" class="image-responsive">
+<div class="col-sm-8">
+    {% for item_image in product_images %}
+        <img src="{{ item_image.image.url }}" class="image-responsive" style='width:100%; height:100%;'>
     {% endfor %}
 </div>
-<div class="col-sm-8">
-    <h3 class="text-center">{{ product.name}}</h3>
+<div class="col-sm-4">
+    <h3 class="text-center">{{ product.name }}</h3>
     <p> {% lorem %} </p>
     <p> {% lorem %} </p>
-<hr>
+{% if product.price_is_active == True %}
+    <hr>
     <p>Price : <strong>{{ product.price }}</strong></p>
     <a href="#"><button class="btn btn-danger"><strong>Add to cart</strong></button></a>
+{% endif %}
 </div>
 {% endblock %}

@@ -11,23 +11,11 @@ def base_view(request):
     return render(request, 'base.html', locals())
 
 
-    # categories = Category.objects.all()
-    # products = Product.objects.all()
-    # context = {
-    #     'categories': categories,
-    #     'products': products,
-    # }
-    #
-    # return render(request, 'base.html', context)
-
-
 def product_view(request, product_slug):
-
     product = Product.objects.get(slug=product_slug)
-    context = {
-        'product': product
-    }
-    return render(request, 'product.html', context)
+    product_images = ProductImage.objects.filter(slug=product_slug)
+
+    return render(request, 'product.html', locals())
 
 
 def category_view(request, category_slug):
@@ -72,32 +60,3 @@ def telegram_form(request):
             return HttpResponse(f'{errors}')
     return HttpResponse('Wrong request method')
 
-# def home(request):
-#     products_images = ProductImage.objects.filter(is_active=True, is_main=True, product__is_active=True)
-#     products_images_phones = products_images.filter(product__category__id=1)
-#     products_images_laptops = products_images.filter(product__category__id=2)
-#     return render(request, 'landing/home.html', locals())
-
-    # elif request.method == 'POST':
-    #     form = CarForm(request.POST)
-    #     if form.is_valid():
-    #         data = form.cleaned_data
-    #         brand = data.get('brand')
-    #         model = data.get('model')
-    #         color = data.get('color')
-    #         weight = data.get('weight')
-    #         full_name_owner = data.get('full_name_owner')
-    #         year_of_issue = data.get('year_of_issue')
-    #         Car.objects.create(
-    #             brand=brand,
-    #             model=model,
-    #             color=color,
-    #             weight=weight,
-    #             full_name_owner=full_name_owner,
-    #             year_of_issue=year_of_issue,
-    #         )
-    #         return redirect('home_page')
-    #     else:
-    #         errors = form.errors
-    #         return HttpResponse(f'{errors}')
-    # return HttpResponse('Wrong request method')
