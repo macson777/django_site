@@ -7,6 +7,7 @@ from .forms import FeedbackForm
 # Create your views here.
 
 def base_view(request):
+    products = Product.objects.all()
     products_images = ProductImage.objects.filter(is_active=True, is_main=True, product__is_active=True)
     return render(request, 'base.html', locals())
 

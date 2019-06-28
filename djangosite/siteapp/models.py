@@ -13,7 +13,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-
     def get_absolute_url(self):
         return reverse('category_detail', kwargs={'category_slug': self.slug})
 
@@ -39,9 +38,14 @@ class Brand(models.Model):
         return self.name
 
 
+def images_folder(instance, filename):
+    filename = f'{instance.slug}.{filename.split(".")[1]}'
+    return f'{instance.slug}/{filename}'
+
+
 class Product(models.Model):
     name = models.CharField(max_length=64, blank=True, null=True, default=None)
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
     price_is_active = models.BooleanField(default=True)
     discount = models.IntegerField(default=0)
     slug = models.SlugField(blank=True)
@@ -55,7 +59,7 @@ class Product(models.Model):
         return reverse('product_detail', kwargs={'product_slug': self.slug})
 
     def __str__(self):
-        return f'{self.price}', self.name, self.slug
+        return f'{self.price}{self.name}'
 
     def __str__(self):
         return f'{self.id}'
@@ -68,33 +72,21 @@ class Product(models.Model):
 pre_save.connect(pre_save_category_slug, sender=Product)
 
 
-def images_folder(instance, filename):
-    filename = f'{instance.slug}.{filename.split(".")[1]}'
-    return f'{instance.slug}/{filename}'
-
-
-def pre_save_image_slug(sender, instance, *args, **kwargs):
-    if not instance.slug:
-        # slug = slugify(translit(str(Product.name), reversed=True))
-        instance.slug = Product.slug
-
-
 class ProductImage(models.Model):
     product = models.ForeignKey('Product', blank=True, null=True, default=None, on_delete=models.DO_NOTHING)
     image = models.ImageField(upload_to=images_folder)
     is_main = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    slug = models.SlugField(blank=True)
+    slug = models.SlugField()
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
+    def __str__(self):
+        return f'{self.id}'
 
     class Meta:
         verbose_name = 'Image for PRODUCT'
         verbose_name_plural = 'Images for PRODUCTS'
-
-
-pre_save.connect(pre_save_image_slug, sender=ProductImage)
 
 
 class CartItem(models.Model):
