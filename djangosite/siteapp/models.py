@@ -26,16 +26,11 @@ def pre_save_category_slug(sender, instance, *args, **kwargs):
 pre_save.connect(pre_save_category_slug, sender=Category)
 
 
-class ProductManager(models.Manager):
-    def all(self, *args, **kwargs):
-        return super(ProductManager, self).get_queryset().filter(available=True)
-
-
 class Brand(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
 def images_folder(instance, filename):
@@ -59,10 +54,10 @@ class Product(models.Model):
         return reverse('product_detail', kwargs={'product_slug': self.slug})
 
     def __str__(self):
-        return f'{self.price}{self.name}'
+        return str(self.price, self.name)
 
     def __str__(self):
-        return f'{self.id}'
+        return str(self.id)
 
     class Meta:
         verbose_name = 'PRODUCT'
@@ -73,7 +68,7 @@ pre_save.connect(pre_save_category_slug, sender=Product)
 
 
 class ProductImage(models.Model):
-    product = models.ForeignKey('Product', blank=True, null=True, default=None, on_delete=models.DO_NOTHING)
+    product = models.ForeignKey('Product', blank=True, null=True, default=None, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=images_folder)
     is_main = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -81,25 +76,22 @@ class ProductImage(models.Model):
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
-    def __str__(self):
-        return f'{self.id}'
-
     class Meta:
         verbose_name = 'Image for PRODUCT'
         verbose_name_plural = 'Images for PRODUCTS'
 
 
 class CartItem(models.Model):
-    product = models.ForeignKey('Product', on_delete=models.DO_NOTHING)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
     qty = models.PositiveIntegerField(default=1)
     item_total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
 
     def __str__(self):
-        return f'Cart item for product {product.title}'
+        return f'Cart item for product {self.product.name}'
 
 
 class Cart(models.Model):
-    items = models.ManyToManyField(CartItem)
+    items = models.ManyToManyField(CartItem, blank=True)
     cart_total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
 
     def __str__(self):

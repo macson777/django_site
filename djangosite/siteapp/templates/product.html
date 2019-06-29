@@ -13,7 +13,30 @@
 {% if product.price_is_active == True %}
     <hr>
     <p>Price : <strong>{{ product.price }}</strong></p>
-    <a href="#"><button class="btn btn-danger"><strong>Add to cart</strong></button></a>
+    <a href="{% url 'add_to_cart' product_slug=product.slug %}"><button class="btn btn-danger"><strong>Add to cart</strong></button></a>
 {% endif %}
 </div>
 {% endblock %}
+
+
+<div class="container-fluid">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+      <ol>
+          <li class="active" data-target="carouselExampleIndicators" data-slide-to="0"></li>
+          <li class="active" data-target="carouselExampleIndicators" data-slide-to="2"></li>
+          <li class="active" data-target="carouselExampleIndicators" data-slide-to="3"></li>
+      </ol>
+      <div class="carousel-inner">
+          <div class="carousel-item active">
+              <img src="#" alt="" class="d-block w-100"
+          </div>
+          <div class="carousel-item active">
+              <img src="#" alt="" class="d-block w-100"
+          </div>
+          <div class="carousel-item active">
+              <img src="#" alt="" class="d-block w-100"
+          </div>
+      </div>
+    </div>
+
+</div>
