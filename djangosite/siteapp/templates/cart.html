@@ -78,22 +78,24 @@ $(document).ready(function(){
     })
 })
 
-$(document).ready(function(){
-    $('.cart-item-qty').on('click tap vclick', function(){
-        qty = $(this).val()
-        item_id = $(this).attr('data-id')
-        data = {
+$(document).ready(function () {
+    $('.cart-item-qty').on('click tap vclick blur', function () {
+        var qty = $(this).val();
+        var id = $(this).attr('data-id');
+        var data = {
             qty: qty,
-            item_id: item_id
-        }
+            item_id: qty
+        };
         $.ajax({
             type: "GET",
             url: '{% url "total_price" %}',
             data: data,
-            success: function(data){
-                $('#cart-item-total-'+item_id).html(parseFloat(data.item_total).toFixed(2) + ' BYN')
-                $("#cart-total-price").html('<strong><big>' + parseFloat(data.cart_total_price).toFixed(2) + ' BYN</big></strong>'
-                    )
+            success: function (data) {
+                var totalPrice = parseFloat(data.item_total).toFixed(2);
+                var total$ = $('#cart-item-total-' + id);
+                var price$ = $("#cart-total-price");
+                total$.html(totalPrice + ' BYN');
+                price$.html('<strong><big>' + totalPrice + ' BYN</big></strong>')
             }
         })
     })
