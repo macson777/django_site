@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main>
+<h3 class="text-center"> Ваш заказ </h3>
+<br>
+<table class="table">
+<tr>
+    <td class="text-center"><strong>Товар</strong></td>
+    <td class="text-center"><strong>Количество</strong></td>
+    <td class="text-center"><strong>Цена</strong></td>
+    <td class="text-center"></td>
+</tr>
+{% for item in cart.items.all %}
+<tr>
+    <td class="text-center">{{ item.product.name }}</td>
+    <td class="text-center">{{ item.qty }}</td>
+    <td class="text-center">{{ item.item_total }}</td>
+    <td></td>
+</tr>
+    {% endfor %}
+<tr>
+    <td></td>
+    <td class="text-center"><strong>Итого: </strong></td>
+    <td class="text-center"><strong>{{ cart.cart_total }} BYN</strong></td>
+    <td></td>
+</tr>
+</table>
+ <h3  class="text-center"><a href="{% url 'cart' %}"><button class="btn btn-danger">Редактировать заказ</button></a>
+
+     <a href="{% url 'make_order' %}"><button class="btn btn-success">Оформить заказ</button></a></h3>
+    </main>
+{% endblock %}

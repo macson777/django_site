@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      <title>Material Design Bootstrap</title>
+      <!-- Font Awesome -->
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+      <!-- Bootstrap core CSS -->
+      <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+      <!-- Material Design Bootstrap -->
+      <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
+      <!-- Your custom styles (optional) -->
+      <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!--<link href='{% static "css/bootstrap.min.css" %}' rel="stylesheet">-->
+    <!--<link href='{% static "css/shop-homepage.css" %}' rel="stylesheet">-->
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <!--<link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap&subset=cyrillic" rel="stylesheet">-->
+</head>
+
+<body>
+
+ <!--Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/"><img src="http://127.0.0.1:8000/media/A Bakery.png" href="/" style='width:50px; height:50px;'></a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{% url 'cart' %}">Корзина <span class="badge" id='cart_count'>{% if not request.session.total %} 0 {% else %} {{ request.session.total }} {% endif %}</span></a>
+
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="{% url 'menu' %}">Меню</a>
+                </li>
+                <li>
+                    <a href="#">About</a>
+                </li>
+                <li>
+                    <a href="{% url 'telegram_form' %}">Contact</a>
+                </li>
+            </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                    {% if not request.user.is_authenticated %}
+					<li class="dropdown">
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Здравствуйте, Гость<span class="caret"></span></a>
+			          <ul class="dropdown-menu">
+                 <li>
+                    <a href="{% url 'login' %}">Войти</a>
+                </li>
+                 <li>
+                    <a href="{% url 'registration' %}">Регистрация</a>
+                </li>
+                {% else %}
+                          <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Здравствуйте, {{ request.user }}<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                <li>
+                    <a href="{% url 'account' %}">История заказов</a>
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}">Выйти</a>
+                </li>
+{% endif %}
+              </ul>
+
+                </li>
+                      </ul>
+                    </li>
+                </ul>
+                </ul>
+
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+    {% block content %}
+        <div class="col-md-3">
+            <p class="lead">Shop Name</p>
+            <div class="list-group">
+                {% for category in categories %}
+                <a href="{{ category.get_absolute_url }}" class="list-group-item">{{category.name}}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-8">
+
+            <div class="row carousel-holder">
+
+                <div class="col-md-12">
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                            </div>
+                            <div class="item">
+                                <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                            </div>
+                            <div class="item">
+                                <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                            </div>
+                        </div>
+                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+</div>
+
+
+<!-- /.container -->
+
+<div class="container">
+    <hr>
+    <!-- Footer -->
+    <footer>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright &copy; h1technologies 2019</p>
+            </div>
+        </div>
+    </footer>
+
+</div>
+<!--<script src='{% static "js/jquery-3.4.1.min.js" %}'></script>-->
+<!--<script src='{% static "js/jquery.maskedinput.min.js" %}'></script>-->
+<!--<script src='{% static "js/bootstrap.js" %}'></script>-->
+
+
+<script type="text/javascript" src='{% static "js/jquery-3.4.1.min.js" %}'></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src='{% static "js/popper.min.js" %}'></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src='{% static "js/bootstrap.min.js" %}'></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src='{% static "js/mdb.min.js" %}'></script>
+ <script src='{% static "js/jquery.maskedinput.min.js" %}'></script>
+<script>
+$(document).ready(function(){
+    $('.add_to_cart').on('click', function(e){
+        e.preventDefault()
+        product_slug = $(this).attr('data-slug')
+        data = {
+            product_slug: product_slug
+        }
+        $.ajax({
+            type: "GET",
+            url: '{% url "add_to_cart" %}',
+            data: data,
+            success: function(data){
+                $("#cart_count").html(data.cart_total)
+            }
+        })
+    })
+})
+
+
+</script>
+
+</body>
+
+</html>

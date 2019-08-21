@@ -1,21 +1,102 @@
 {% extends "base.html" %}
 
 {% block content %}
+<main>
 <h3 class="text-center"> Ваша корзина</h3>
 <br>
+{% if cart.items.count > 0 %}
+<div class="my-cart">
 <table class="table">
-    <tr>
-        <td class="text-center"><strong>Товар</strong></td>
-        <td class="text-center"><strong>Количество</strong></td>
-        <td class="text-center"><strong>Цена</strong></td>
-    </tr>
-    {% for item in cart.items.all %}
-    <tr>
-        <td class="text-center">{{ item.product.name }}</td>
-        <td class="text-center">{{ item.qty }}</td>
-        <td class="text-center">{{ item.item_total }}</td>
-        <td class="text-center"><a href="{% url 'remove_from_cart' product_slug=item.product.slug %}" class="btn btn-default">Удалить из корзины</a></td>
-    </tr>
+<tr>
+    <td class="text-center"><strong>Товар</strong></td>
+    <!--<td class="text-center"><strong></strong></td>-->
+    <td class="text-center"><strong>Количество</strong></td>
+    <td class="text-center"><strong>Цена</strong></td>
+    <td class="text-center"></td>
+    <td class="text-center"></td>
+</tr>
+{% for item in cart.items.all %}
+<tr id="{{ item.product.slug }}">
+    <input type="hidden" class="cart-item" data-id="{{ item.product.id}}">
+    <td class="text-center"><a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a></td>
+    <!--<td class="text-center"> <a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product_image.url }}" class='rounded mx-auto d-block img-fluid z-depth-1' style='width:50px; height:50px;'></td>-->
+    <td class="text-center">
+        <form action="" method="GET">
+            <input type="number" name="qty" class="cart-item-qty" data-id="{{ item.id }}" value="{{ item.qty }}" min="1" style="width: 50px;">
+        </form>
+    </td>
+    <td class="text-center" id="cart-item-total-{{ item.id }}">{{ item.item_total }} BYN</td>
+    <td class="text-center"><a href="#" class='remove_from_cart' data-slug='{{ item.product.slug }}'><button class="btn badge-pill btn-danger btn-pill">
+        <i class="fas fa-trash-alt"></i>
+    </button></a></td>
+</tr>
     {% endfor %}
+<tr>
+    <!--<td></td>-->
+    <td></td>
+    <td class="text-center"><strong><big>Итого: </big></strong></td>
+    <td class="text-center" id="cart-total-price"><strong><big>{{ cart.cart_total }} BYN</big></strong></td>
+    <td></td>
+    <td></td>
+
+</tr>
 </table>
+<br>
+    <h3  class="text-center"><a href="{% url 'menu' %}"><button class="btn btn-success">Добавить ещё</button></a></h3>
+    <h3  class="text-center"><a href="{% url 'checkout' %}"><button class="btn btn-info">Проверить заказ</button></a></h3>
+</div>
+<h3 class="cart-empty"></h3>
+{% else %}
+<h3  class="text-center"><a href="{% url 'menu' %}"><button class="btn btn-danger"><strong>Добавить товар</strong></button></a></h3>
+{% endif %}
+</main>
+<script>
+$(document).ready(function(){
+    $('.cart-empty').css('display', 'none')
+    $('.remove_from_cart').on('click tap vclick', function(e){
+        e.preventDefault()
+        product_slug = $(this).attr('data-slug')
+        item_product_id = $('.cart-item').attr('data-id')
+        data = {
+            product_slug: product_slug
+        }
+        $.ajax({
+            type: "GET",
+            url: '{% url "remove_from_cart" %}',
+            data: data,
+            success: function(data){
+                $("#cart_count").html(data.cart_total)
+                $('#'+product_slug).remove()
+                $("#cart-total-price").html('<strong><big>' + parseFloat(data.cart_total_price).toFixed(2) + ' BYN</big></strong>')
+                if(parseInt(data.cart_total) == 0){
+                    $('.my-cart').css('display', 'none')
+                    $('.cart-empty').css('display', 'block')
+                    $('.cart-empty').html('<h3 class="text-center"><a href="{% url 'menu' %}"><button class="btn btn-danger"><strong>Добавить товар</strong></button></a></h3>')
+                }
+            }
+        })
+    })
+})
+
+$(document).ready(function(){
+    $('.cart-item-qty').on('click tap vclick', function(){
+        qty = $(this).val()
+        item_id = $(this).attr('data-id')
+        data = {
+            qty: qty,
+            item_id: item_id
+        }
+        $.ajax({
+            type: "GET",
+            url: '{% url "total_price" %}',
+            data: data,
+            success: function(data){
+                $('#cart-item-total-'+item_id).html(parseFloat(data.item_total).toFixed(2) + ' BYN')
+                $("#cart-total-price").html('<strong><big>' + parseFloat(data.cart_total_price).toFixed(2) + ' BYN</big></strong>'
+                    )
+            }
+        })
+    })
+})
+</script>
 {% endblock %}

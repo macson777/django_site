@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main>
+<div class="container">
+
+    <!--Grid row-->
+        <div class="row wow fadeIn">
+{% for product_image in products_images %}
+           <!--Fourth column-->
+          <div class="col-lg-3 col-md-6 mb-4">
+
+            <!--Card-->
+            <div class="card">
+
+              <!--Card image-->
+                <!--Zoom effect-->
+                <div class="view overlay zoom">
+                    <a href="{{ product_image.product.get_absolute_url }}"><img src="{{ product_image.image.url }}" class="img-fluid " alt="smaple image"></a>
+                </div>
+
+              <!--Card image-->
+
+              <!--Card content-->
+              <div class="card-body text-center">
+                <!--Category & Title-->
+                <a href="" class="dark-grey-text">
+                  <h4><strong><a href="{{ product_image.product.get_absolute_url }}">{{ product_image.product.name }}</a></strong></h4>
+                </a>
+                <h6>
+                  <strong>
+                    <a href="" class="dark-grey-text description">{{ product_image.product.description }}</a>
+                  </strong>
+                </h6>
+
+                <h4 class="font-weight-bold red-text">
+                  <strong>{{ product_image.product.price }} руб.</strong>
+                </h4>
+                <a href='#' class='add_to_cart' data-slug='{{ product_image.product.slug }}'><button class='btn badge-pill btn-success btn-pill'>Добавить в корзину</button></a>
+
+              </div>
+              <!--Card content-->
+
+            </div>
+            <!--Card-->
+
+          </div>
+          <!--Fourth column-->
+  {% endfor %}
+        </div>
+        <!--Grid row-->
+
+</div>
+    </main>
+<script>
+$(document).ready(function(){
+    $('.add_to_cart').on('click', function(e){
+        e.preventDefault()
+        product_slug = $(this).attr('data-slug')
+        data = {
+            product_slug: product_slug
+        }
+        $.ajax({
+            type: "GET",
+            url: '{% url "add_to_cart" %}',
+            data: data,
+            success: function(data){
+                $("#cart_count").html(data.cart_total)
+            }
+        })
+    })
+})
+</script>
+{% endblock %}
