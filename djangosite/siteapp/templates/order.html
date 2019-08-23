@@ -26,7 +26,7 @@
 	$(document).ready(function(){
 		$("#id_phone").mask("+375 (99) 999-99-99")
 		$('#div_id_address').css('display', 'none')
-		$('#id_buying_type').on('click', function(){
+		$('#id_buying_type').on('click tap vclick blur', function(){
 			buying_type = $(this).val()
 			if(buying_type == 'Доставка курьером'){
 				$('#div_id_address').css('display', 'block')

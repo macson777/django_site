@@ -215,7 +215,7 @@ def make_order_view(request):
             last_name = data.get('last_name')
             phone = data.get('phone')
             buying_type = data.get('buying_type')
-            if buying_type == 'Доставка':
+            if buying_type == 'Доставка курьером':
                 address = data.get('address')
             else:
                 address = '-'

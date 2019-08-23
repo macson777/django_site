@@ -22,7 +22,7 @@
     <!--<td class="text-center"> <a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product_image.url }}" class='rounded mx-auto d-block img-fluid z-depth-1' style='width:50px; height:50px;'></td>-->
     <td class="text-center">
         <form action="" method="GET">
-            <input type="number" name="qty" class="cart-item-qty" data-id="{{ item.id }}" value="{{ item.qty }}" min="1" style="width: 50px;">
+            <input type="number" pattern="\d*" name="qty" class="cart-item-qty" data-id="{{ item.id }}" value="{{ item.qty }}" min="1" style="width: 50px;">
         </form>
     </td>
     <td class="text-center" id="cart-item-total-{{ item.id }}">{{ item.item_total }} BYN</td>
@@ -77,23 +77,24 @@ $(document).ready(function(){
         })
     })
 })
-
-$(document).ready(function(){
-    $('.cart-item-qty').on('click tap vclick', function(){
-        qty = $(this).val()
-        item_id = $(this).attr('data-id')
-        data = {
+$(document).ready(function () {
+    $('.cart-item-qty').on('click tap vclick blur', function () {
+        var qty = $(this).val();
+        var id = $(this).attr('data-id');
+        var data = {
             qty: qty,
-            item_id: item_id
-        }
+            item_id: id,
+        };
         $.ajax({
             type: "GET",
             url: '{% url "total_price" %}',
             data: data,
-            success: function(data){
-                $('#cart-item-total-'+item_id).html(parseFloat(data.item_total).toFixed(2) + ' BYN')
-                $("#cart-total-price").html('<strong><big>' + parseFloat(data.cart_total_price).toFixed(2) + ' BYN</big></strong>'
-                    )
+            success: function (data) {
+                var totalPrice = parseFloat(data.item_total).toFixed(2);
+                var total$ = $('#cart-item-total-' + id);
+                var price$ = $("#cart-total-price");
+                total$.html(totalPrice + ' BYN');
+                price$.html('<strong><big>' + parseFloat(data.cart_total_price).toFixed(2) + ' BYN</big></strong>')
             }
         })
     })
