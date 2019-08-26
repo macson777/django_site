@@ -21,7 +21,7 @@
     <td class="text-center"><a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a></td>
     <!--<td class="text-center"> <a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product_image.url }}" class='rounded mx-auto d-block img-fluid z-depth-1' style='width:50px; height:50px;'></td>-->
     <td class="text-center">
-        <form action="" method="GET">
+        <form method="GET">
             <input type="number" pattern="\d*" name="qty" class="cart-item-qty" data-id="{{ item.id }}" value="{{ item.qty }}" min="1" style="width: 50px;">
         </form>
     </td>

@@ -93,5 +93,5 @@ class OrderForm(forms.Form):
 class FeedbackForm(forms.Form):
     name = forms.CharField(max_length=50)
     email = forms.EmailField(max_length=50)
-    phone = forms.CharField(max_length=13, min_length=13)
+    phone = forms.CharField(max_length=19, min_length=19)
     message = forms.CharField(max_length=500)
