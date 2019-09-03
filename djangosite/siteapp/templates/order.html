@@ -6,25 +6,30 @@
 <hr>
 <form action='{% url "make_order" %}' method="POST">
 {% csrf_token %}
-<div class='col-sm-4'>
+	<center>
+<div class='col-md-4'>
 	{{ form.name|as_crispy_field }}
 </div>
-<div class='col-sm-4'>
+<div class='col-md-4'>
 	{{ form.last_name|as_crispy_field }}
 </div>
-<div class='col-sm-4'>
-	{{ form.phone|as_crispy_field }}
+<div class='col-md-4'>
+<label for="phone">Номер телефона:</label>
+   <input type="tel" name="phone" class="form-control" id="phone" placeholder="+375 12 3456789">
 </div>
+<div class='col-md-4'>
 {{ form.buying_type|as_crispy_field }}
 {{ form.address|as_crispy_field }}
 {{ form.date|as_crispy_field }}
 {{ form.comments|as_crispy_field }}
+</div>
 <input type='submit' class='btn btn-success' value='Оформить заказ'>
+		</center>
 </form>
 	</main>
 <script>
 	$(document).ready(function(){
-		$("#id_phone").mask("+375 (99) 999-99-99")
+		$("#phone").mask("+375 (99) 999-99-99")
 		$('#div_id_address').css('display', 'none')
 		$('#id_buying_type').on('click tap vclick blur', function(){
 			buying_type = $(this).val()
@@ -34,11 +39,11 @@
 				$('#div_id_address').css('display', 'none')
 			}
 		})
-		$('#id_date_month').css('width', '100px')
+		$('#id_date_month').css('width', '120px')
 		$('#id_date_month').css('display', 'inline')
 		$('#id_date_year').css('width', '100px')
 		$('#id_date_year').css('display', 'inline')
-		$('#id_date_day').css('width', '80px')
+		$('#id_date_day').css('width', '70px')
 		$('#id_date_day').css('display', 'inline')
 	})
 </script>

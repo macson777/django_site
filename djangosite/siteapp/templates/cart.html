@@ -21,9 +21,7 @@
     <td class="text-center"><a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a></td>
     <!--<td class="text-center"> <a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product_image.url }}" class='rounded mx-auto d-block img-fluid z-depth-1' style='width:50px; height:50px;'></td>-->
     <td class="text-center">
-        <form method="GET">
-            <input type="number" pattern="\d*" name="qty" class="cart-item-qty" data-id="{{ item.id }}" value="{{ item.qty }}" min="1" style="width: 50px;">
-        </form>
+            <input type="number" inputmode="numeric" pattern="[0-9]*" name="qty" class="cart-item-qty" data-id="{{ item.id }}" value="{{ item.qty }}" min="1" style="width: 50px;">
     </td>
     <td class="text-center" id="cart-item-total-{{ item.id }}">{{ item.item_total }} BYN</td>
     <td class="text-center"><a href="#" class='remove_from_cart' data-slug='{{ item.product.slug }}'><button class="btn badge-pill btn-danger btn-pill">
