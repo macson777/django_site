@@ -40,8 +40,8 @@
 </tr>
 </table>
 <br>
-    <h3  class="text-center"><a href="{% url 'menu' %}"><button class="btn btn-success">Добавить ещё</button></a></h3>
-    <h3  class="text-center"><a href="{% url 'checkout' %}"><button class="btn btn-info">Проверить заказ</button></a></h3>
+    <h3  class="text-center"><a href="{% url 'menu' %}"><button type="button" class="btn btn-outline-success waves-effect">Добавить ещё</button></a>
+    <a href="{% url 'checkout' %}"><button type="button" class="btn btn-outline-primary waves-effect">Проверить и оформить заказ</button></a></h3>
 </div>
 <h3 class="cart-empty"></h3>
 {% else %}
@@ -76,7 +76,7 @@ $(document).ready(function(){
     })
 })
 $(document).ready(function () {
-    $('.cart-item-qty').on('click tap vclick blur', function () {
+    $('.cart-item-qty').on('click tap vclick change', function () {
         var qty = $(this).val();
         var id = $(this).attr('data-id');
         var data = {

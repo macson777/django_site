@@ -23,7 +23,7 @@
 {{ form.date|as_crispy_field }}
 {{ form.comments|as_crispy_field }}
 </div>
-<input type='submit' class='btn btn-success' value='Оформить заказ'>
+<input type='submit' class='btn btn-outline-success waves-effect' value='Оформить заказ'>
 		</center>
 </form>
 	</main>
@@ -31,7 +31,7 @@
 	$(document).ready(function(){
 		$("#phone").mask("+375 (99) 999-99-99")
 		$('#div_id_address').css('display', 'none')
-		$('#id_buying_type').on('click tap vclick blur', function(){
+		$('#id_buying_type').on('click tap vclick change', function(){
 			buying_type = $(this).val()
 			if(buying_type == 'Доставка курьером'){
 				$('#div_id_address').css('display', 'block')
