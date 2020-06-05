@@ -1,4 +1,4 @@
-Django==2.2.2
+Django==2.2.13
 Pillow==6.0.0
 python-telegram-bot==11.1.0
 django-uuslug==1.1.8
